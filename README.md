@@ -40,7 +40,6 @@
 - belongs_to :condition
 - belongs_to :prefecture
 - belongs_to :delivery_fee_payer
-- belongs_to :sender_place
 - belongs_to :preparing_day
 
 ## purchases テーブル
