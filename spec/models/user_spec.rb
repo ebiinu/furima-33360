@@ -68,14 +68,12 @@ describe User do
       it 'passwordが数字を含まない場合は登録できない' do
         @user.password = 'aaaaaaa'
         @user.valid?
-        expect(@user.errors.full_messages).to include "Password confirmation doesn't match Password",
-                                                      'Password is invalid. Input both letters and numbers.'
+        expect(@user.errors.full_messages).to include 'Password is invalid. Input both letters and numbers.'
       end
       it 'passwordが英字を含まない場合は登録できない' do
         @user.password = '11111111'
         @user.valid?
-        expect(@user.errors.full_messages).to include "Password confirmation doesn't match Password",
-                                                      'Password is invalid. Input both letters and numbers.'
+        expect(@user.errors.full_messages).to include 'Password is invalid. Input both letters and numbers.'
       end
       it '重複したemailが存在する場合登録できない' do
         @user.save
@@ -88,11 +86,6 @@ describe User do
         @user.password = 'aaaa'
         @user.valid?
         expect(@user.errors.full_messages).to include 'Password is too short (minimum is 6 characters)'
-      end
-      it 'first_nameが空では登録できない' do
-        @user.first_name = ''
-        @user.valid?
-        expect(@user.errors.full_messages).to include "First name can't be blank"
       end
       it 'family_nameが全角でない場合登録できない' do
         @user.family_name = 'abe'
@@ -109,8 +102,18 @@ describe User do
         @user.valid?
         expect(@user.errors.full_messages).to include 'Family name kana is invalid. Input full-width katakana characters.'
       end
+      it 'family_name_kanaが全角カタカナでない場合登録できない' do
+        @user.family_name_kana = 'ｱﾍﾞ'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'Family name kana is invalid. Input full-width katakana characters.'
+      end
       it 'first_name_kanaが全角カタカナでない場合登録できない' do
         @user.first_name_kana = 'さやか'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'First name kana is invalid. Input full-width katakana characters.'
+      end
+      it 'first_name_kanaが全角カタカナでない場合登録できない' do
+        @user.first_name_kana = 'ｻﾔｶ'
         @user.valid?
         expect(@user.errors.full_messages).to include 'First name kana is invalid. Input full-width katakana characters.'
       end
@@ -118,6 +121,17 @@ describe User do
         @user.email = 'aaaaaa1gmail.com'
         @user.valid?
         expect(@user.errors.full_messages).to include 'Email is invalid'
+      end
+      it 'passwordが半角でない場合登録できない' do
+        @user.password = 'あああ4444'
+        @user.valid?
+        expect(@user.errors.full_messages).to include "Password confirmation doesn't match Password", "Password is invalid. Input both letters and numbers."
+      end
+      it 'passwordとpassword_confirmationが異なる場合保存できない' do
+        @user.password = "abcdef6"
+        @user.password_confirmation = "abcdef5"
+        @user.valid?
+        expect(@user.errors.full_messages).to include "Password confirmation doesn't match Password"
       end
     end
   end
