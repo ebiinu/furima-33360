@@ -16,6 +16,10 @@ describe OrderAddress do
         @order_address.building_name = ''
         expect(@order_address).to be_valid
       end
+      it 'phone_numberは11桁であれば登録できる' do
+        @order_address.phone_number = '09017077739'
+        expect(@order_address).to be_valid
+      end
     end
     context '購入できないとき' do
       it 'postal_codeが空では登録できない' do
